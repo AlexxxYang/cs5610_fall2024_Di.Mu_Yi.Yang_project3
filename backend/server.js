@@ -54,15 +54,22 @@ db.once('open', () => {
 });
 
 // 静态文件服务 - 前端构建文件
-let frontend_dir = path.join(__dirname, 'dist')
-console.log('Frontend directory:', frontend_dir);
+// let frontend_dir = path.join(__dirname, '..', 'frontend', 'dist')
+// console.log('Frontend directory:', frontend_dir);
 
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(frontend_dir));
-    app.get('*', function (req, res) {
-        res.sendFile(path.join(frontend_dir, "index.html"));
-    });
-}
+// if (process.env.NODE_ENV === 'production') {
+//     app.use(express.static(frontend_dir));
+//     app.get('*', function (req, res) {
+//         res.sendFile(path.join(frontend_dir, "index.html"));
+//     });
+// }
+
+let frontend_dir = path.join(__dirname, '..', 'frontend', 'dist')
+app.use(express.static(frontend_dir));
+app.get('*', function (req, res) {           // 在所有环境都执行
+    console.log("received request");
+    res.sendFile(path.join(frontend_dir, "index.html"));
+});
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
