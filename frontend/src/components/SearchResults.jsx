@@ -20,7 +20,7 @@ const SearchResults = () => {
         setResults(response.data);
       } catch (err) {
         setError('Failed to fetch search results');
-        console.error('Search error:', err);
+
       } finally {
         setLoading(false);
       }
@@ -30,25 +30,30 @@ const SearchResults = () => {
   }, [searchTerm]);
 
   if (loading) return (
-    <div className="flex justify-center items-center p-8">
-      <div className="text-gray-500">Searching...</div>
+    <div className="flex justify-center items-center p-12">
+      <div className="flex items-center space-x-2 text-purple-600">
+        <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
+        <span>Searching...</span>
+      </div>
     </div>
   );
 
   if (error) return (
-    <div className="text-red-500 p-8 text-center">
-      {error}
+    <div className="max-w-2xl mx-auto p-4">
+      <div className="text-red-500 bg-red-50 p-4 rounded-lg text-center">
+        {error}
+      </div>
     </div>
   );
 
   return (
     <div className="max-w-2xl mx-auto p-4">
-      <h2 className="text-xl font-semibold mb-4">
-        Search results for "{searchTerm}"
+      <h2 className="text-2xl font-bold text-purple-900 mb-6">
+        Search results for "<span className="text-purple-600">{searchTerm}</span>"
       </h2>
       
       {results.length === 0 ? (
-        <div className="text-gray-500 text-center p-8">
+        <div className="bg-purple-50 text-purple-700 text-center p-8 rounded-lg">
           No users found matching "{searchTerm}"
         </div>
       ) : (
@@ -57,19 +62,37 @@ const SearchResults = () => {
             <Link
               key={user._id}
               to={`/profile/${user.username}`}
-              className="block p-4 bg-white rounded-lg shadow hover:shadow-md transition-shadow"
+              className="block p-4 bg-white rounded-lg border border-purple-100 hover:shadow-md transition-all"
             >
               <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                  <User className="text-white" size={24} />
+                {/* 用户头像 */}
+                <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <span className="text-xl font-semibold text-purple-600">
+                    {user.username[0].toUpperCase()}
+                  </span>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-lg">{user.username}</h3>
-                  <p className="text-gray-500 text-sm">
-                    Joined {new Date(user.joinedAt).toLocaleDateString()}
-                  </p>
+
+                {/* 用户信息 */}
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-lg text-purple-900">
+                      {user.username}
+                    </h3>
+                    <span className="text-sm text-gray-500">
+                      Joined {new Date(user.joinedAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  
                   {user.description && (
-                    <p className="text-gray-600 mt-1">{user.description}</p>
+                    <p className="text-gray-600 mt-1 line-clamp-2">
+                      {user.description}
+                    </p>
+                  )}
+                  
+                  {user.status && (
+                    <p className="text-sm text-purple-600 mt-2 italic">
+                      {user.status}
+                    </p>
                   )}
                 </div>
               </div>

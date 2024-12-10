@@ -28,7 +28,7 @@ router.get('/validate-token', async (req, res) => {
             return res.status(404).json({ error: 'User not found' });
         }
         
-        // 只返回需要的字段
+        
         res.json({
             username: user.username,
             joinedAt: user.joinedAt,
@@ -36,13 +36,13 @@ router.get('/validate-token', async (req, res) => {
             status: user.status
         });
     } catch (error) {
-        console.error('Error fetching user:', error);
+      
         res.status(500).json({ error: 'Failed to fetch user data' });
     }
 });
 
 router.post('/signup', async (req, res) => {
-    console.log('Received signup request:', req.body);
+ 
     try {
         const user = await userModel.createUser({
             username: req.body.username,
@@ -53,7 +53,7 @@ router.post('/signup', async (req, res) => {
         res.cookie('token', token, { httpOnly: true });
         res.json({ message: 'Signup successful' });
     } catch (error) {
-        console.error('Signup error:', error);
+       
         res.status(400).json({ error: error.message });
     }
 });
@@ -61,7 +61,7 @@ router.post('/signup', async (req, res) => {
 router.post('/login', async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await userModel.findUserByUsername(username); // 修改这里
+        const user = await userModel.findUserByUsername(username); 
         
         if (!user || !await userModel.verifyPassword(user, password)) {
             return res.status(401).json({ error: 'Invalid username or password' });
@@ -81,7 +81,7 @@ router.post('/login', async (req, res) => {
             _id: user._id
         });
     } catch (error) {
-        console.error('Login error:', error);
+
         res.status(500).json({ error: 'Server error during login' });
     }
 });
@@ -105,7 +105,7 @@ router.put('/status', async (req, res) => {
 
         res.json({ status: updatedUser.status });
     } catch (error) {
-        console.error('Update status error:', error);
+       
         res.status(500).json({ error: 'Failed to update status' });
     }
 });
@@ -115,7 +115,7 @@ router.get('/search/:term', async (req, res) => {
       const users = await userModel.searchUsers(req.params.term);
       res.json(users);
     } catch (error) {
-      console.error('Search error:', error);
+
       res.status(500).json({ error: 'Failed to search users' });
     }
   });

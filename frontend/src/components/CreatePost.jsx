@@ -9,7 +9,7 @@ const CreatePost = ({ onPostCreated, onCancel }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // 确保添加这个来阻止默认表单提交行为
+    e.preventDefault(); 
     if (!content.trim() && !image) return;
 
     setIsSubmitting(true);
@@ -24,22 +24,21 @@ const CreatePost = ({ onPostCreated, onCancel }) => {
 
       const response = await posts.create(formData);
       
-      // 清除表单状态
+    
       setContent('');
       setImage(null);
       setPreviewUrl(null);
       
-      // 通知父组件
+      
       if (onPostCreated) {
         onPostCreated(response.data);
       }
       
-      // 如果有 onCancel，调用它来关闭创建表单
+     
       if (onCancel) {
         onCancel();
       }
     } catch (err) {
-      console.error('Post creation error:', err);
       setError(
         err.response?.data?.error ||
         err.response?.data ||
@@ -59,7 +58,7 @@ const CreatePost = ({ onPostCreated, onCancel }) => {
     }
   };
 
-  // 清理预览URL
+  
   useEffect(() => {
     return () => {
       if (previewUrl) {
@@ -74,7 +73,7 @@ const CreatePost = ({ onPostCreated, onCancel }) => {
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          placeholder="What's on your mind?"
+          placeholder="What's happening?"
           className="w-full p-2 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           rows="3"
           disabled={isSubmitting}

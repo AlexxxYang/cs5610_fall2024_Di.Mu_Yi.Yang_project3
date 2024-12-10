@@ -5,7 +5,7 @@ export const PostSchema = new Schema({
   content: {
     type: String,
     required: function() {
-      return !this.image; // 如果有图片,则content不是必需的
+      return !this.image; 
     },
     default: ''
   },

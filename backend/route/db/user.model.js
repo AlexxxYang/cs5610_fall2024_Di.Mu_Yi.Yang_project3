@@ -32,10 +32,10 @@ export async function searchUsers(searchTerm) {
     return UserModel.find({
       username: { 
         $regex: searchTerm, 
-        $options: 'i' // case-insensitive
+        $options: 'i' 
       }
     })
-    .select('username joinedAt description') // Only select needed fields
+    .select('username joinedAt description') 
     .exec();
   }
 

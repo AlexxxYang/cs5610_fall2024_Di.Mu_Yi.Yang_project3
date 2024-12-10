@@ -9,7 +9,7 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 检查当前用户是否是帖子作者
+  
   const isAuthor = currentUser && currentUser.username === post.author;
 
   const handleEdit = async () => {
@@ -17,33 +17,23 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
       setIsSubmitting(true);
       setError('');
 
-      // 验证输入
+     
       if (!editContent.trim()) {
         setError('Content cannot be empty');
         return;
       }
 
-      console.log('Starting update with:', {
-        postId: post._id,
-        content: editContent
-      });
 
       const response = await posts.update(post._id, editContent);
-      console.log('Update successful:', response.data);
+   
 
-      // 更新父组件中的数据
+     
       if (onUpdate) {
         onUpdate(post._id, response.data);
       }
       
       setIsEditing(false);
     } catch (err) {
-      console.error('Update failed:', {
-        error: err,
-        response: err.response,
-        data: err.response?.data,
-        status: err.response?.status
-      });
       setError(err.response?.data?.error || 'Failed to update post');
     } finally {
       setIsSubmitting(false);
@@ -54,29 +44,17 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       try {
         setIsSubmitting(true);
-        console.log('Attempting to delete post:', {
-          postId: post._id,
-          author: post.author,
-          currentUser: currentUser?.username
-        });
-
+        
         const response = await posts.delete(post._id);
-        console.log('Delete response:', response);
+   
 
         if (response.data) {
-          console.log('Post deleted successfully');
-          // 通知父组件更新列表
+          
           if (onDelete) {
             onDelete(post._id);
           }
         }
       } catch (err) {
-        console.error('Delete failed:', {
-          error: err,
-          response: err.response,
-          data: err.response?.data,
-          status: err.response?.status
-        });
         setError(err.response?.data?.error || 'Failed to delete post');
       } finally {
         setIsSubmitting(false);
@@ -85,25 +63,25 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
   };
 
   const handleKeyDown = (e) => {
-    // 按 Esc 取消编辑
+    
     if (e.key === 'Escape') {
       setIsEditing(false);
       setEditContent(post.content);
       setError('');
     }
-    // 按 Ctrl+Enter 或 Cmd+Enter 提交更新
+    
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       handleEdit();
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-4 transition-all duration-200 hover:shadow-md">
+    <div className="bg-white rounded-lg shadow-sm border border-purple-100 p-4 transition-all duration-200 hover:shadow-md">
       <div className="flex items-start justify-between">
         <div>
           <Link
             to={`/profile/${post.author}`}
-            className="font-semibold text-blue-600 hover:text-blue-800 transition-colors"
+            className="font-semibold text-purple-700 hover:text-purple-900 transition-colors"
           >
             {post.author}
           </Link>
@@ -140,7 +118,7 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
               <>
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="p-1.5 text-gray-600 hover:bg-gray-50 rounded transition-colors"
+                  className="p-1.5 text-purple-600 hover:bg-purple-50 rounded transition-colors"
                   title="Edit post"
                 >
                   <Edit2 size={16} />
@@ -164,9 +142,9 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
             value={editContent}
             onChange={(e) => setEditContent(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full p-2 border rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+            className="w-full p-2 border rounded-md focus:border-purple-500 focus:ring-1 focus:ring-purple-500 transition-all"
             rows="3"
-            placeholder="What's on your mind?"
+            placeholder="What's happening?"
             disabled={isSubmitting}
           />
         ) : (
@@ -175,20 +153,24 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
       </div>
 
       {post.image && (
-  <div className="mt-3 relative group">
-    <img 
-      src={post.image} // 直接使用完整的S3 URL
-      alt="Post attachment"
-      className="max-w-full rounded-lg border border-gray-200"
-      style={{ maxHeight: '400px', objectFit: 'contain' }}
-    />
+  <div className="mt-3">
     <a 
-      href={post.image} // 直接使用完整的S3 URL
+      href={post.image} 
       target="_blank"
       rel="noopener noreferrer"
-      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all"
+      className="block relative group w-fit" // 改为 w-fit 使容器适应图片大小
     >
-      <ImageIcon className="text-white opacity-0 group-hover:opacity-100 transition-all" size={24} />
+      <img 
+        src={post.image} 
+        alt="Post attachment"
+        className="max-w-full rounded-lg border border-purple-100"
+        style={{ maxHeight: '400px', objectFit: 'contain' }}
+      />
+      <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity rounded-lg" />
+      <ImageIcon 
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white opacity-0 group-hover:opacity-70 transition-opacity"
+        size={24} 
+      />
     </a>
   </div>
 )}

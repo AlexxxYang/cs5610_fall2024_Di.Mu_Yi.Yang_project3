@@ -27,7 +27,7 @@ function App() {
             throw new Error('Session invalid');
           }
         } catch (err) {
-          console.error('Invalid session:', err);
+        
           localStorage.removeItem('user');
           setUser(null);
         }

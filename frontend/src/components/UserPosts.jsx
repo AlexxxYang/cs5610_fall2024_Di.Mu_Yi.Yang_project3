@@ -15,7 +15,6 @@ const UserPosts = ({ username }) => {
         const response = await posts.getUserPosts(username);
         setUserPosts(response.data);
       } catch (error) {
-        console.error('Failed to fetch user posts:', error);
         setError('Failed to load posts');
       } finally {
         setLoading(false);

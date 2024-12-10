@@ -21,7 +21,6 @@ const PostList = () => {
       setPosts(response.data);
     } catch (error) {
       setError('Failed to fetch posts');
-      console.error('Failed to fetch posts:', error);
     } finally {
       setLoading(false);
     }
@@ -41,7 +40,7 @@ const PostList = () => {
 
   const handleNewPost = (newPost) => {
     setPosts(prevPosts => [newPost, ...prevPosts]);
-    setShowCreatePost(false); // 关闭创建表单
+    setShowCreatePost(false); 
   };
 
   if (loading) return <div>Loading...</div>;
@@ -60,7 +59,7 @@ const PostList = () => {
         </span>
       </div>
       <span className="text-gray-500 text-lg">
-        What's on your mind, {currentUser.username}?
+        What's happening, {currentUser.username}?
       </span>
     </button>
   )}

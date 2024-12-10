@@ -17,11 +17,10 @@ const Login = () => {
     setIsLoading(true);
   
     try {
-      console.log('Attempting login with:', formData);
+
       const response = await auth.login(formData);
       
-      console.log('Login response:', response);
-      console.log('Cookies:', document.cookie); // 查看cookie是否设置
+
       
       const userData = {
         username: response.data.username,
@@ -32,64 +31,77 @@ const Login = () => {
       navigate('/');
       window.location.reload();
     } catch (err) {
-      console.error('Login error:', err); // 添加这行来调试
-      setError(err.response?.data?.error || '登录失败');
+      setError(err.response?.data?.error || 'Login failed');
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow">
-      <h2 className="text-2xl font-bold mb-6 text-center">Log in</h2>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-            Username
-          </label>
-          <input
-            type="text"
-            id="username"
-            value={formData.username}
-            onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            required
-            disabled={isLoading}
-          />
+    <div className="min-h-[80vh] flex flex-col items-center justify-center px-4">
+      <div className="w-full max-w-md bg-white rounded-xl shadow-sm border border-purple-100 p-8">
+        {/* Logo/Brand Section */}
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-purple-900">Welcome Back</h2>
+          <p className="text-gray-600 mt-2">Log in to your SeaSo account</p>
         </div>
-
-        <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={formData.password}
-            onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-            required
-            disabled={isLoading}
-          />
-        </div>
-
-        {error && (
-          <div className="text-red-500 text-sm">
-            {error}
+        
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-1">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={formData.username}
+              onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
+              className="w-full px-4 py-3 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+              required
+              disabled={isLoading}
+            />
           </div>
-        )}
 
-        <button
-          type="submit"
-          className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Logging in...' : 'Log in'}
-        </button>
-      </form>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={formData.password}
+              onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+              className="w-full px-4 py-3 rounded-lg border border-purple-200 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+              required
+              disabled={isLoading}
+            />
+          </div>
+
+          {error && (
+            <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg">
+              {error}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            className="w-full py-3 px-4 text-white bg-purple-600 hover:bg-purple-700 rounded-lg font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center">
+                <span className="mr-2">Logging in</span>
+                <span>...</span>
+              </span>
+            ) : (
+              'Log in'
+            )}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
+
 
 export default Login;

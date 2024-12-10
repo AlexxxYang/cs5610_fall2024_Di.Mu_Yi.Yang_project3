@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Edit2, Check, X } from 'lucide-react';
 import axios from 'axios';
-import UserPosts from '../components/UserPosts';  // 使用 UserPosts 替代 PostList
+import UserPosts from '../components/UserPosts';  
 
 const Profile = ({ user }) => {
   const { username } = useParams();
@@ -21,7 +21,7 @@ const Profile = ({ user }) => {
         setStatus(response.data.status || '');
         setError(null);
       } catch (error) {
-        console.error('Failed to fetch user data:', error);
+
         setError('Failed to load user data');
       } finally {
         setLoading(false);
@@ -37,13 +37,13 @@ const Profile = ({ user }) => {
         withCredentials: true
       });
       setIsEditing(false);
-      // 更新本地数据
+  
       setUserData(prev => ({
         ...prev,
         status: status
       }));
     } catch (error) {
-      console.error('Failed to update status:', error);
+
     }
   };
 
@@ -56,67 +56,98 @@ const Profile = ({ user }) => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
-      <div className="bg-white rounded-lg shadow p-6 mb-6">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl font-bold">{username}</h1>
-            {userData?.joinedAt && (
-              <p className="text-gray-500 text-sm">
-                Joined on: {new Date(userData.joinedAt).toLocaleDateString()}
-              </p>
-            )}
+    <div className="max-w-2xl mx-auto p-4">
+      <div className="bg-white rounded-xl shadow-sm border border-purple-100 overflow-hidden">
+        {/* 顶部紫色背景装饰 */}
+        <div className="h-24 bg-gradient-to-r from-purple-500 to-purple-400" />
+        
+        <div className="px-6 pb-6 -mt-8">
+          {/* 用户头像 */}
+          <div className="w-24 h-24 bg-purple-100 rounded-full border-4 border-white shadow-md flex items-center justify-center mb-4">
+            <span className="text-3xl font-bold text-purple-600">
+              {username?.[0]?.toUpperCase()}
+            </span>
           </div>
-          
-          {user?.username === username && (
+
+          <div className="flex justify-between items-start">
             <div>
-              {isEditing ? (
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleSave}
-                    className="p-2 text-green-500 hover:bg-green-50 rounded-full"
-                  >
-                    <Check size={20} />
-                  </button>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-full"
-                  >
-                    <X size={20} />
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="p-2 text-gray-500 hover:bg-gray-50 rounded-full"
-                >
-                  <Edit2 size={20} />
-                </button>
+              <h1 className="text-3xl font-bold text-purple-900 mb-1">{username}</h1>
+              {userData?.joinedAt && (
+                <p className="text-gray-500 text-sm">
+                  Joined {new Date(userData.joinedAt).toLocaleDateString()}
+                </p>
               )}
             </div>
-          )}
-        </div>
+            
+            {user?.username === username && (
+              <div>
+                {isEditing ? (
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handleSave}
+                      className="p-2 text-green-500 hover:bg-green-50 rounded-full transition-colors"
+                    >
+                      <Check size={20} />
+                    </button>
+                    <button
+                      onClick={() => setIsEditing(false)}
+                      className="p-2 text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="p-2 text-purple-500 hover:bg-purple-50 rounded-full transition-colors"
+                  >
+                    <Edit2 size={20} />
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
 
-        <div className="mt-4">
-          <h2 className="text-lg font-semibold mb-2">Status</h2>
-          {isEditing ? (
-            <textarea
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="w-full p-2 border rounded-lg resize-none h-24"
-              placeholder="Update your status..."
-            />
-          ) : (
-            <p className="text-gray-700">{status || 'No status update yet'}</p>
-          )}
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold text-purple-800 mb-3">About</h2>
+            {isEditing ? (
+              <textarea
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                className="w-full p-3 border border-purple-200 rounded-lg resize-none h-32 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-colors"
+                placeholder="Write something about yourself..."
+              />
+            ) : (
+              <div className="bg-purple-50 rounded-lg p-4 text-gray-700">
+                {status ? (
+                  <p className="whitespace-pre-wrap">{status}</p>
+                ) : (
+                  <p className="text-gray-500 italic">No bio yet</p>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* 替换这里：使用 UserPosts 替代 PostList */}
-      <div className="mt-6">
-        <h2 className="text-xl font-semibold mb-4">Posts</h2>
-        <UserPosts username={username} />
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold text-purple-900 mb-6">Posts</h2>
+        <div className="space-y-4">
+          <UserPosts username={username} />
+        </div>
       </div>
+
+      {loading && (
+        <div className="flex justify-center items-center py-8">
+          <div className="text-purple-600">Loading...</div>
+        </div>
+      )}
+
+      {error && (
+        <div className="text-center text-red-500 py-4 bg-red-50 rounded-lg">
+          {error}
+        </div>
+      )}
     </div>
   );
 };
