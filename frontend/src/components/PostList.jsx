@@ -49,20 +49,20 @@ const PostList = () => {
   return (
     <div className="max-w-2xl mx-auto p-4">
   {currentUser && !showCreatePost && (
-    <button
-      onClick={() => setShowCreatePost(true)}
-      className="w-full p-6 mb-6 text-left bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-200 flex items-center space-x-4"
-    >
-      <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-        <span className="text-white font-bold">
-          {currentUser.username[0].toUpperCase()}
-        </span>
-      </div>
-      <span className="text-gray-500 text-lg">
-        What's happening, {currentUser.username}?
+  <button
+    onClick={() => setShowCreatePost(true)}
+    className="w-full p-6 mb-6 text-left bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-purple-100 flex items-center space-x-4"
+  >
+    <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+      <span className="text-purple-600 font-bold">
+        {currentUser.username[0].toUpperCase()}
       </span>
-    </button>
-  )}
+    </div>
+    <span className="text-gray-500 text-lg">
+      What's happening, {currentUser.username}?
+    </span>
+  </button>
+)}
 
       {showCreatePost && (
         <div className="mb-6">
