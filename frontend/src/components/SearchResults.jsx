@@ -65,14 +65,13 @@ const SearchResults = () => {
               className="block p-4 bg-white rounded-lg border border-purple-100 hover:shadow-md transition-all"
             >
               <div className="flex items-center space-x-4">
-                {/* 用户头像 */}
+                
                 <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
                   <span className="text-xl font-semibold text-purple-600">
                     {user.username[0].toUpperCase()}
                   </span>
                 </div>
 
-                {/* 用户信息 */}
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-lg text-purple-900">
