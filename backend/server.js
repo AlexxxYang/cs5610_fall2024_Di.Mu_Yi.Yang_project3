@@ -52,7 +52,7 @@ db.once('open', () => {
 
 let frontend_dir = path.join(__dirname, '..', 'frontend', 'dist')
 app.use(express.static(frontend_dir));
-app.get('*', function (req, res) {           // 在所有环境都执行
+app.get('*', function (req, res) {           
     console.log("received request");
     res.sendFile(path.join(frontend_dir, "index.html"));
 });
