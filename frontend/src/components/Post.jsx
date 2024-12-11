@@ -158,7 +158,7 @@ const Post = ({ post, onDelete, onUpdate, currentUser }) => {
       href={post.image} 
       target="_blank"
       rel="noopener noreferrer"
-      className="block relative group w-fit" // 改为 w-fit 使容器适应图片大小
+      className="block relative group w-fit" 
     >
       <img 
         src={post.image} 
